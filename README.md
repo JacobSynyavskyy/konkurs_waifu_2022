@@ -1,0 +1,1 @@
+# konkurs_waifu_2022
