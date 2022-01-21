@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+<link href="static/css/style.css", rel="stylesheet", type="text/css"/>
+<title>WaifuKampf</title>
+
+</head>
+<body>
+
+<div>
+	<h1>Оберіть найкращу вайфу</h1>
+	<div class="challenge">
+		
+		<div class="waifu">
+			<img src={{ url_for('static', filename=waifu1.link) }}><br>
+			{{ waifu1.name }}<br>
+			{{ waifu1.anime }}<br>
+			{{ waifu1.raiting }} ({{ change1 }})<br>
+			<form method="post">
+			</form>
+		</div>
+		<div>
+			<form method="post">
+			<input type="submit" class="btn btn-warning ss1488" value="Далі" name="my_id"></button>
+			</form>
+		</div>
+		<div class="waifu">
+			<img src={{ url_for('static', filename=waifu2.link) }}><br>
+			{{ waifu2.name }}<br>
+			{{ waifu2.anime }}<br>
+			{{ waifu2.raiting }} ({{ change2 }})<br>
+		</div>		
+	
+	</div>
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+<link href="static/css/style.css", rel="stylesheet", type="text/css"/>
+<title>WaifuKampf</title>
+
+</head>
+<body>
+
+<div>
+	<div class="head">		
+		<form method="post">
+		<input type="submit" class="btn big_btn" value="START" name="my_id"></button>
+		</form>	
+	</div>
+	<div class="table_waifu">	
+	<h2>Поточний рейтинг вайфу</h2>
+  <table border="2">
+   
+   <tr>
+    <th>Ім'я вайфу</th>
+    <th>Аніме</th>
+    <th>Рейтинг</th>
+
+   </tr>
+
+
+	{% for waifu in list_waifu %}
+	<div>
+		<tr>
+			<td>{{ waifu.name }}</td><td>{{ waifu.anime }}</td><td>{{ waifu.raiting }}</td>
+		</tr>				
+	</div>
+	{% endfor %}
+
+
+  </table>
+	</div>
+</div>
+
+</body>
+</html>
+

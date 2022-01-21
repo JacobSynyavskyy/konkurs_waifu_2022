@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<link href="static/css/style.css", rel="stylesheet", type="text/css"/>
+<title>{{ waifu.name }}</title>
+
+</head>
+<body>
+
+<div>
+	<h1>Тест</h1>
+	<div>
+		
+		<img src={{ url_for('static', filename=waifu.link) }}> <br>
+		{{ waifu.name }}<br>
+		{{ waifu.anime }}<br>
+		<form method="post">
+		<input type="submit" class="btn btn-warning" value="Наступна вайфу" name="my_id"></button>
+		</form>
+	</div>
+</div>
+
+</body>
+</html>
