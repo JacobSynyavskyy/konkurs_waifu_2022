@@ -30,37 +30,67 @@ class Waifu(db.Model):
     def __repr__(self):
         return 'Waifu %r' % self.id
 
-# як варіант в адресі буде шифруватися інформація про вайфу
+class Chalange(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    waifu1 = db.Column(db.Integer)
+    waifu2 = db.Column(db.Integer)   
+    result = db.Column(db.Text)
+    
+    def __repr__(self):
+        return 'Chalange %r' % self.id
 
+# як варіант в адресі буде шифруватися інформація про вайфу 
 
 @app.route('/', methods=["POST", "GET"])
 def index():
     if request.method == "POST":
-        return redirect(encoder_link())
+        
+        return redirect("/chelenger")
     else:
         list_waifu = Waifu.query.order_by(Waifu.raiting.desc()).all()
-        return render_template("index_waifu.html", list_waifu=list_waifu)
+        lst_waifu = []
+        for i in range(len(list_waifu)):
+            lst_waifu.append({"num":i, "waifu":list_waifu[i]})
+        return render_template("index_waifu.html", list_waifu=lst_waifu)
         
-@app.route('/<int:A>-<int:B>-<int:id1>-<int:C>-<int:D>-<int:id2>-<int:E>-<int:F>-<int:G>', methods=["POST", "GET"])
-def chelenger(A,B,id1,C,D,id2,E,F,G):
+@app.route('/chelenger', methods=["POST", "GET"])
+def chelenger():
+
+    id1 = random.randint(1,wife)
+    id2 = id1
+    while(id1 == id2):
+        id2 = random.randint(1,wife)
+
     waifu1 = Waifu.query.get(id1)
     waifu2 = Waifu.query.get(id2)     
 
     if request.method == "POST":
+        change1 = 1
+        change2 = -1
         my_id = request.form.get("my_id")
-        if my_id == 'Обрати першу вайфу':
+        if my_id == "На головну":
+            list_waifu = Waifu.query.order_by(Waifu.raiting.desc()).all()
+            return render_template("index_waifu.html", list_waifu=list_waifu)            
+        elif my_id == 'Обрати першу вайфу':
             waifu1.raiting += 1
             waifu2.raiting -= 1
+            change1 = '+1'
+            change2 = '-1'
         elif my_id == 'Обрати другу вайфу':
             waifu1.raiting -= 1
             waifu2.raiting += 1
-        else:
+            change1 = '-1'
+            change2 = '+1'
+        elif my_id == 'Не знаю жодної':
             waifu1.raiting -= 1
-            waifu2.raiting -= 1   
-        # if True:
+            waifu2.raiting -= 1
+            change1 = '-1'
+            change2 = '-1'
+        elif my_id == 'Далі':
+            return redirect('/chelenger')
         try:
             db.session.commit()
-            return redirect(encoder_link())
+            return render_template("result.html", waifu1=waifu1, waifu2=waifu2, change1=change1, change2=change2)
         except:
             return "При редагуванні БД сталася якась бебра"
     else:
@@ -72,7 +102,7 @@ def result():
     waifu2 = Waifu.query.get(2)
     change1 = '+9'
     change2 = '-8'
-    return render_template("result.html", waifu1=waifu1, waifu2=waifu2, change1=change1, change2=change2,)
+    return render_template("result.html", waifu1=waifu1, waifu2=waifu2, change1=change1, change2=change2)
 
 
 @app.route('/<int:id>', methods=["POST", "GET"])

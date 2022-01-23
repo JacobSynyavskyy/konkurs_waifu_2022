@@ -11,13 +11,18 @@
 <body>
 
 <div>
+
+	<h1>Конкурс вайфу 2022</h2>
+	<h2 class="zagolovok0">Анімешні меми</h2>
+	<div class="table_waifu">
+	
 	<div class="head">		
 		<form method="post">
 		<input type="submit" class="btn big_btn" value="START" name="my_id"></button>
 		</form>	
-	</div>
-	<div class="table_waifu">	
-	<h2>Поточний рейтинг вайфу</h2>
+	</div>	
+	
+	<h2 class="zagolovok1">Поточний рейтинг вайфу</h2>
   <table border="2">
    
    <tr>
@@ -30,9 +35,25 @@
 
 	{% for waifu in list_waifu %}
 	<div>
+		{% if waifu.num==0 %}
+		<tr class="first">
+			<td>{{ waifu.waifu.name }}</td><td>{{ waifu.waifu.anime }}</td><td>{{ waifu.waifu.raiting }}</td>
+		</tr>	
+		{% elif waifu.num==1 %}
+		<tr class="second">
+			<td>{{ waifu.waifu.name }}</td><td>{{ waifu.waifu.anime }}</td><td>{{ waifu.waifu.raiting }}</td>
+		</tr>			
+		{% elif waifu.num==2 %}
+		<tr class="third">
+			<td>{{ waifu.waifu.name }}</td><td>{{ waifu.waifu.anime }}</td><td>{{ waifu.waifu.raiting }}</td>
+		</tr>		
+
+		{% else %}
 		<tr>
-			<td>{{ waifu.name }}</td><td>{{ waifu.anime }}</td><td>{{ waifu.raiting }}</td>
-		</tr>				
+			<td>{{ waifu.waifu.name }}</td><td>{{ waifu.waifu.anime }}</td><td>{{ waifu.waifu.raiting }}</td>
+		</tr>		
+		{% endif %}
+		
 	</div>
 	{% endfor %}
 
