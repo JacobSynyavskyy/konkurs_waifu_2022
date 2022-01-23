@@ -44,25 +44,39 @@ class Chalange(db.Model):
 @app.route('/', methods=["POST", "GET"])
 def index():
     if request.method == "POST":
+        ch = len(Chalange.query.all()) + 1
+        id1 = random.randint(1,wife)
+        id2 = id1
+        while(id1 == id2):
+            id2 = random.randint(1,wife)        
+        chalange = Chalange(id=ch, waifu1=id1, waifu2=id2)
         
-        return redirect("/chelenger")
+        try:
+            db.session.add(chalange)
+            db.session.commit()
+            return redirect(f"/chelenger-{ch}")
+        except:
+            return "При додаванні челенджу сталася якась бебра" 
+        
+        
     else:
         list_waifu = Waifu.query.order_by(Waifu.raiting.desc()).all()
         lst_waifu = []
         for i in range(len(list_waifu)):
             lst_waifu.append({"num":i, "waifu":list_waifu[i]})
         return render_template("index_waifu.html", list_waifu=lst_waifu)
+
+# @app.route('/test/t')
+# def test():
+    # return render_template("test.html")
         
-@app.route('/chelenger', methods=["POST", "GET"])
-def chelenger():
-
-    id1 = random.randint(1,wife)
-    id2 = id1
-    while(id1 == id2):
-        id2 = random.randint(1,wife)
-
-    waifu1 = Waifu.query.get(id1)
-    waifu2 = Waifu.query.get(id2)     
+@app.route('/chelenger-<int:id>', methods=["POST", "GET"])
+def chelenger(id):
+    chelenge = Chalange.query.get(id)
+    if chelenge.result != None:
+        return "KUKISH"
+    waifu1 = Waifu.query.get(chelenge.waifu1)
+    waifu2 = Waifu.query.get(chelenge.waifu2)     
 
     if request.method == "POST":
         change1 = 1
@@ -87,17 +101,27 @@ def chelenger():
             change1 = '-1'
             change2 = '-1'
         elif my_id == 'Далі':
-            return redirect('/chelenger')
+            ch = len(Chalange.query.all()) + 1
+            id1 = random.randint(1,wife)
+            id2 = id1
+            while(id1 == id2):
+                id2 = random.randint(1,wife)        
+            chalange = Chalange(id=ch, waifu1=id1, waifu2=id2)
+            return redirect(f"/chelenger-{ch}")
         try:
+        #if True:
+            chelenge.result = my_id
+            db.session.add(chelenge)
             db.session.commit()
-            return render_template("result.html", waifu1=waifu1, waifu2=waifu2, change1=change1, change2=change2)
         except:
-            return "При редагуванні БД сталася якась бебра"
+        #else:
+            return "При редагуванні БД сталася якась бебра" 
+        return redirect(f"/result-{id}")
     else:
         return render_template("chalanger.html", waifu1=waifu1, waifu2=waifu2)
 
-@app.route('/test')
-def result():
+@app.route('/result-<int:id>')
+def result(id):
     waifu1 = Waifu.query.get(1)
     waifu2 = Waifu.query.get(2)
     change1 = '+9'
