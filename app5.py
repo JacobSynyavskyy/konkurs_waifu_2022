@@ -11,7 +11,7 @@ client = app.test_client()
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///waifu.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-wife = 40
+wife = 120
     
 class Waifu(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -68,8 +68,11 @@ def index():
 @app.route('/chelenger-<int:id>', methods=["POST", "GET"])
 def chelenger(id):
     chelenge = Chalange.query.get(id)
-    if chelenge.result != None:
-        return redirect(f"/result-{id}")
+    try:
+        if chelenge.result != None:
+            return redirect(f"/result-{id}")
+    except:
+        return render_template("404.html")
     waifu1 = Waifu.query.get(chelenge.waifu1)
     waifu2 = Waifu.query.get(chelenge.waifu2)     
 
@@ -77,21 +80,14 @@ def chelenger(id):
         change1 = 1
         change2 = -1
         my_id = request.form.get("my_id")
-        if my_id == "На головну":
-            list_waifu = Waifu.query.order_by(Waifu.raiting.desc()).all()
-            return render_template("index_waifu.html", list_waifu=list_waifu)            
+        if my_id == "До рейтингу":
+            return redirect('/')       
         R = ELO(waifu1.raiting, waifu2.raiting, my_id)
         waifu1.raiting -= R[0]
         waifu2.raiting -= R[1]        
         chelenge.result = my_id
-        if R[0] > 0:
-            chelenge.change1 = f'+{R[0]}'
-        else:
-            chelenge.change1 = f'{R[0]}'
-        if R[1] > 0:
-            chelenge.change2 = f'+{R[1]}'
-        else:
-            chelenge.change2 = f'{R[1]}'        
+        chelenge.change1 = R[0]
+        chelenge.change2 = R[1]       
         try:
         #if True:
             db.session.add(chelenge)
@@ -107,7 +103,9 @@ def chelenger(id):
 def result(id):
     if request.method == "POST":
         my_id = request.form.get("my_id")
-        if my_id == 'Далі':
+        if my_id == "До рейтингу":
+            return redirect('/')    
+        elif my_id == 'Далі':
             ch = len(Chalange.query.all()) + 1
             id1 = random.randint(1,wife)
             id2 = id1
@@ -123,19 +121,28 @@ def result(id):
 
     else:
         chelenge = Chalange.query.get(id)
-        waifu1 = Waifu.query.get(chelenge.waifu1)
-        waifu2 = Waifu.query.get(chelenge.waifu2) 
-        return render_template("result.html", waifu1=waifu1, waifu2=waifu2, chelenge=chelenge)
+        try:
+            waifu1 = Waifu.query.get(chelenge.waifu1)
+            waifu2 = Waifu.query.get(chelenge.waifu2) 
+            return render_template("result.html", waifu1=waifu1, waifu2=waifu2, chelenge=chelenge)
+        except:
+            return render_template("404.html")
 
 
 @app.route('/<int:id>', methods=["POST", "GET"])
 def print_waifu(id):
-    waifu = Waifu.query.get(id)
-    if request.method == "POST":
-        return redirect(f'/{id+1}')
-    else:
-        return render_template("waifu.html", waifu=waifu)
-
+    try:
+        waifu = Waifu.query.get(id)
+        if request.method == "POST":
+            my_id = request.form.get("my_id")
+            if my_id == 'Наступна вайфу':
+                return redirect(f'/{id+1}')
+            if my_id == 'Попередня вайфу':
+                return redirect(f'/{id-1}')
+        else:
+            return render_template("waifu.html", waifu=waifu)
+    except:
+        return render_template("404.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

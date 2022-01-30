@@ -15,17 +15,18 @@ def ELO(Ra, Rb, result, K=25):
     
     Ka = K
     Kb = K
-    if Ra > 2400: 
+    if abs(Ra-1200) > 600:
         Ka = 15
-    elif Ra > 1300: 
+    elif abs(Ra-1200) > 100:
         Ka = 20
-    if Rb > 2400: 
+    if abs(Rb-1200) > 600:
         Kb = 15
-    elif Rb > 1300: 
+    elif abs(Rb-1200) > 100:
         Kb = 20
 
+
     change1 = round(Ka*(Sa-Ea))
-    change2 = round(Ka*(Sb-Eb))
+    change2 = -round(Kb*(Sa-Ea))
 
     return change1, change2
     

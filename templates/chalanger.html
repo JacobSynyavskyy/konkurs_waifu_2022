@@ -19,26 +19,49 @@
 			{{ waifu1.name }}<br>
 			{{ waifu1.anime }}<br>
 			<form method="post">
-			<input type="submit" class="btn btn-warning" value="Обрати першу вайфу" name="my_id"></button>
+			<input type="submit" class="btn btn-warning" value="Обрати першу вайфу" name="my_id">
 			</form>
 		</div>
-		<div>
-			<form method="post">
-			<input type="submit" class="btn btn-warning ss1488" value="Не знаю жодної" name="my_id"></button>
-			</form>
+
+		<div class="key_bar">
+			<div class="key_b_a">
+				<form method="post">
+				<input type="submit" class="btn btn-warning" value="До рейтингу" name="my_id">
+				</form>
+			</div>
+			<div class="key_b_b">
+				<form method="post">
+				<input type="submit" class="btn btn-warning" value="Не знаю жодної" name="my_id">
+				</form>
+			</div>
 		</div>
+		
+
+		
 		<div class="waifu">
 			<img src={{ url_for('static', filename=waifu2.link) }}><br>
 			{{ waifu2.name }}<br>
 			{{ waifu2.anime }}<br>
 			<form method="post">
-			<input type="submit" class="btn btn-warning" value="Обрати другу вайфу" name="my_id"></button>
+			<input type="submit" class="btn btn-warning" value="Обрати другу вайфу" name="my_id">
 			</form>
 		</div>		
 	
 	</div>
 </div>
+<div class="inline_info">
+	<div class="info">	
+		Автор проекту: @JacobSV<br>
+		Дизайн: @frankotyk1918<br>
+		Технічні консультації: @Nitekot<br>
+	</div>
 
+	<div class="info">
+		<a href="https://www.t.me/animemes_ua">Наш Телеграм</a><br>
+		<a href="https://www.instagram.com/kyiv_anime">Наш Інстаграм</a><br>
+		<a href="https://www.facebook.com/kyiv.march/">Наш Фейсбук</a><br>
+	</div>
+</div>
 </body>
 </html>
 
